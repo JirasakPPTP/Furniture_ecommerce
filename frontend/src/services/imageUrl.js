@@ -1,5 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-const API_ORIGIN = API_URL.replace(/\/api\/?$/, "");
+import { API_ORIGIN } from "./config";
 
 export const getImageUrl = (imagePath) => {
   if (!imagePath) return "https://placehold.co/600x400?text=No+Image";
@@ -8,4 +7,3 @@ export const getImageUrl = (imagePath) => {
   }
   return `${API_ORIGIN}${imagePath}`;
 };
-

@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL || "https://furniture-ecommerce-6242.onrender.com/api";
+import { API_URL } from "./config";
 
 const api = axios.create({
   baseURL: API_URL,
