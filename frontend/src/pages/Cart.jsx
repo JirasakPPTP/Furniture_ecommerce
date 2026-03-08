@@ -28,6 +28,9 @@ const Cart = () => {
                   <img
                     src={getImageUrl(item.image)}
                     alt={item.name}
+                    onError={(event) => {
+                      event.currentTarget.src = "https://placehold.co/600x400?text=No+Image";
+                    }}
                     className="h-16 w-20 rounded object-cover"
                   />
                   <div>

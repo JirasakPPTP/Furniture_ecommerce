@@ -12,6 +12,9 @@ const ProductCard = ({ product }) => {
         <img
           src={getImageUrl(product.images?.[0])}
           alt={product.name}
+          onError={(event) => {
+            event.currentTarget.src = "https://placehold.co/600x400?text=No+Image";
+          }}
           className="h-52 w-full object-cover"
         />
       </Link>

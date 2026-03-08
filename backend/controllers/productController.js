@@ -3,22 +3,27 @@ import Product from "../models/Product.js";
 import Category from "../models/Category.js";
 
 const parseImagesFromRequest = (req) => {
-  if (req.files?.length) {
-    return req.files.map((file) => `/uploads/${file.filename}`);
-  }
+  const uploadedImages = req.files?.length
+    ? req.files.map((file) => `/uploads/${file.filename}`)
+    : [];
 
+  let bodyImages = [];
   if (Array.isArray(req.body.images)) {
-    return req.body.images;
+    bodyImages = req.body.images;
+  } else if (typeof req.body.images === "string" && req.body.images.trim()) {
+    bodyImages = req.body.images.split(",");
   }
 
-  if (typeof req.body.images === "string" && req.body.images.trim()) {
-    return req.body.images
-      .split(",")
-      .map((item) => item.trim())
-      .filter(Boolean);
-  }
+  const normalized = [...uploadedImages, ...bodyImages]
+    .map((item) => String(item || "").trim())
+    .filter(Boolean)
+    .map((item) => item.replace(/\\/g, "/"))
+    .map((item) => {
+      if (item.startsWith("http://") || item.startsWith("https://")) return item;
+      return item.startsWith("/") ? item : `/${item}`;
+    });
 
-  return [];
+  return [...new Set(normalized)];
 };
 
 export const getProducts = async (req, res, next) => {
