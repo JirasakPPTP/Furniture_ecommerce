@@ -27,6 +27,11 @@ export const uploadProductImages = async (files = []) => {
   if (!files.length) return [];
 
   if (!hasCloudinaryConfig()) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "Cloudinary is not configured in production. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET."
+      );
+    }
     return files.map((file) => `/uploads/${file.filename}`);
   }
 
@@ -48,4 +53,3 @@ export const uploadProductImages = async (files = []) => {
 
   return uploadedUrls;
 };
-
