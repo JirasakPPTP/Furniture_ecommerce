@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 import Product from "../models/Product.js";
 import Category from "../models/Category.js";
+import { uploadProductImages } from "../config/cloudinary.js";
 
-const parseImagesFromRequest = (req) => {
-  const uploadedImages = req.files?.length
-    ? req.files.map((file) => `/uploads/${file.filename}`)
-    : [];
+const parseImagesFromRequest = async (req) => {
+  const uploadedImages = await uploadProductImages(req.files || []);
 
   let bodyImages = [];
   if (Array.isArray(req.body.images)) {
@@ -100,7 +99,7 @@ export const getProductById = async (req, res, next) => {
 export const createProduct = async (req, res, next) => {
   try {
     const { name, description, price, category, stock, rating = 0 } = req.body || {};
-    const images = parseImagesFromRequest(req);
+    const images = await parseImagesFromRequest(req);
 
     const missingFields = [];
     if (!String(name || "").trim()) missingFields.push("name");
@@ -140,7 +139,7 @@ export const updateProduct = async (req, res, next) => {
   try {
     const { category } = req.body;
     const updates = { ...req.body };
-    const uploadedImages = parseImagesFromRequest(req);
+    const uploadedImages = await parseImagesFromRequest(req);
 
     if (uploadedImages.length > 0) {
       updates.images = uploadedImages;
