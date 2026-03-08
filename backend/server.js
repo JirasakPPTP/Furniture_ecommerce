@@ -19,13 +19,12 @@ const __dirname = path.dirname(__filename);
 app.use(
   cors({
     origin: (origin, callback) => {
-      const allowedOrigins = [
-        process.env.CLIENT_URL,
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-      ].filter(Boolean);
+      const allowedOrigins = [process.env.CLIENT_URL].filter(Boolean);
+      const isLocalDevOrigin =
+        /^http:\/\/localhost:\d+$/.test(origin || "") ||
+        /^http:\/\/127\.0\.0\.1:\d+$/.test(origin || "");
 
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin) || isLocalDevOrigin) {
         return callback(null, true);
       }
 
