@@ -12,7 +12,7 @@ const Checkout = ({ user }) => {
     addressLine: "",
     city: "",
     postalCode: "",
-    country: "",
+    province: "",
     phone: "",
     paymentMethod: "cod",
   });
@@ -47,7 +47,7 @@ const Checkout = ({ user }) => {
           addressLine: form.addressLine,
           city: form.city,
           postalCode: form.postalCode,
-          country: form.country,
+          country: form.province,
           phone: form.phone,
         },
         paymentMethod: form.paymentMethod,
@@ -76,12 +76,12 @@ const Checkout = ({ user }) => {
           <input name="postalCode" value={form.postalCode} onChange={handleChange} placeholder="รหัสไปรษณีย์" className="rounded border border-stone-300 px-3 py-2" required />
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
-          <input name="country" value={form.country} onChange={handleChange} placeholder="ประเทศ" className="rounded border border-stone-300 px-3 py-2" required />
+          <input name="province" value={form.province} onChange={handleChange} placeholder="จังหวัด" className="rounded border border-stone-300 px-3 py-2" required />
           <input name="phone" value={form.phone} onChange={handleChange} placeholder="เบอร์โทรศัพท์" className="rounded border border-stone-300 px-3 py-2" required />
         </div>
 
         <select name="paymentMethod" value={form.paymentMethod} onChange={handleChange} className="w-full rounded border border-stone-300 px-3 py-2">
-          <option value="cod">เก็บเงินปลายทาง</option>
+          <option value="cod">ชำระเงินปลายทาง</option>
           <option value="card">บัตรเครดิต/เดบิต</option>
           <option value="bank_transfer">โอนผ่านธนาคาร</option>
         </select>
@@ -94,7 +94,7 @@ const Checkout = ({ user }) => {
       <aside className="h-fit rounded-lg bg-white p-6 ring-1 ring-stone-200">
         <h2 className="text-lg font-semibold text-stone-900">สรุปคำสั่งซื้อ</h2>
         <p className="mt-3 text-stone-600">จำนวนรายการ: {cartItems.length}</p>
-        <p className="mt-1 text-xl font-bold text-brand-700">ยอดรวม: ${subtotal.toFixed(2)}</p>
+        <p className="mt-1 text-xl font-bold text-brand-700">ยอดรวม: ฿{subtotal.toFixed(2)}</p>
       </aside>
     </div>
   );

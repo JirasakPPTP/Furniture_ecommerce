@@ -43,8 +43,11 @@ const ProductDetail = () => {
       <div className="space-y-4">
         <h1 className="text-3xl font-bold text-stone-900">{product.name}</h1>
         <p className="text-sm text-stone-500">หมวดหมู่: {product.category?.name}</p>
-        <Rating value={product.rating || 0} />
-        <p className="text-2xl font-bold text-brand-700">${product.price}</p>
+        <div className="space-y-1">
+          <Rating value={product.rating || 0} />
+          <p className="text-sm text-stone-600">คะแนน: {product.rating || 0}</p>
+        </div>
+        <p className="text-2xl font-bold text-brand-700">฿{product.price}</p>
         <p className="leading-relaxed text-stone-700">{product.description}</p>
         <p className="text-sm text-stone-500">สต๊อก: {product.stock}</p>
 

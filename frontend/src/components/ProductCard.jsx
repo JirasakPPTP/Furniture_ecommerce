@@ -23,9 +23,12 @@ const ProductCard = ({ product }) => {
           <h3 className="text-lg font-semibold text-stone-900">{product.name}</h3>
           <p className="text-sm text-stone-500">{product.category?.name || "ไม่ระบุหมวดหมู่"}</p>
         </div>
-        <Rating value={product.rating || 0} />
+        <div className="space-y-1">
+          <Rating value={product.rating || 0} />
+          <p className="text-sm text-stone-600">คะแนน: {product.rating || 0}</p>
+        </div>
         <div className="flex items-center justify-between">
-          <span className="text-xl font-bold text-brand-700">${product.price}</span>
+          <span className="text-xl font-bold text-brand-700">฿{product.price}</span>
           <button
             onClick={() => addToCart(product, 1)}
             className="rounded-md bg-brand-700 px-3 py-2 text-sm font-medium text-white hover:bg-brand-800"

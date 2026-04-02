@@ -51,6 +51,15 @@ const Login = ({ onAuthSuccess }) => {
           {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
         </button>
       </form>
+        <div className='text-black'>
+          รหัสผ่านสำหรับทดสอบใช้ในการสื่อสารกันได้
+        </div>
+        <tr className='text-black'>
+          jirasak@gmail.com
+        </tr>
+        <tr className='text-black'>
+          123456
+        </tr>
 
       <p className="mt-4 text-sm text-stone-600">
         ยังไม่มีบัญชี? <Link to="/register" className="text-brand-700">สมัครสมาชิก</Link>
