@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Rating from "./Rating";
 import useCart from "../hooks/useCart";
 import { getImageUrl } from "../services/imageUrl";
 
@@ -23,10 +22,7 @@ const ProductCard = ({ product }) => {
           <h3 className="text-lg font-semibold text-stone-900">{product.name}</h3>
           <p className="text-sm text-stone-500">{product.category?.name || "ไม่ระบุหมวดหมู่"}</p>
         </div>
-        <div className="space-y-1">
-          <Rating value={product.rating || 0} />
-          <p className="text-sm text-stone-600">คะแนน: {product.rating || 0}</p>
-        </div>
+        <p className="text-sm text-stone-600">คะแนน: {product.rating || 0}</p>
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold text-brand-700">฿{product.price}</span>
           <button
