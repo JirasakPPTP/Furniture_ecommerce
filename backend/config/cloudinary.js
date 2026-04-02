@@ -1,4 +1,3 @@
-import fs from "fs/promises";
 import { v2 as cloudinary } from "cloudinary";
 
 const cloudinaryConfig = {
@@ -14,14 +13,24 @@ if (hasCloudinaryConfig()) {
   cloudinary.config(cloudinaryConfig);
 }
 
-const tryDeleteLocalFile = async (filePath) => {
-  if (!filePath) return;
-  try {
-    await fs.unlink(filePath);
-  } catch {
-    // Ignore cleanup errors.
-  }
-};
+const uploadBufferToCloudinary = (buffer, folder) =>
+  new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        resource_type: "image",
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve(result);
+      }
+    );
+
+    stream.end(buffer);
+  });
 
 export const uploadProductImages = async (files = []) => {
   if (!files.length) return [];
@@ -32,22 +41,29 @@ export const uploadProductImages = async (files = []) => {
         "Cloudinary is not configured in production. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET."
       );
     }
-    return files.map((file) => `/uploads/${file.filename}`);
+    return files
+      .map((file) => file.path || (file.filename ? `/uploads/${file.filename}` : ""))
+      .filter(Boolean);
   }
 
   const folder = process.env.CLOUDINARY_FOLDER || "furniture-ecommerce/products";
 
   const uploadedUrls = await Promise.all(
     files.map(async (file) => {
-      try {
+      if (file.buffer) {
+        const result = await uploadBufferToCloudinary(file.buffer, folder);
+        return result.secure_url;
+      }
+
+      if (file.path) {
         const result = await cloudinary.uploader.upload(file.path, {
           folder,
           resource_type: "image",
         });
         return result.secure_url;
-      } finally {
-        await tryDeleteLocalFile(file.path);
       }
+
+      throw new Error("Unsupported upload file format");
     })
   );
 
